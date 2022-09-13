@@ -36,7 +36,8 @@ int main(){
     if(is_dir_exists(etc_absolute_path) == 0){
         first_time_setup(
             OS_NAME,
-            OS_VERSION
+            OS_VERSION,
+            etc_absolute_path
         );
     }
 

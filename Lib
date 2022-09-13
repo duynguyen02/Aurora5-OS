@@ -1,2 +1,2 @@
-sudo apt-get install libncurses5-dev libncursesw5-dev
+gcc aurora5.c libs/setup/shell.c libs/utils/aucolors.c libs/utils/Common.c libs/setup/FirstSetup.c  -o test
 
