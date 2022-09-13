@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "aucolors.h": "c",
+        "shell.h": "c",
+        "constants.h": "c"
+    }
+}
