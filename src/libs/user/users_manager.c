@@ -20,7 +20,7 @@ char *create_passwd_file_path(const char *rootPath)
     return passwd_file_path;
 }
 
-int is_user_exist(char *userName, char *rootPath)
+int is_user_exist(char *userName,const char *rootPath)
 {
     FILE *fp;
     char *line = NULL;
@@ -46,6 +46,35 @@ int is_user_exist(char *userName, char *rootPath)
     return 0;
 }
 
+int is_correct_password(char *userName, char *password,const char *rootPath)
+{
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen(create_passwd_file_path(rootPath), "r");
+    if (fp == NULL)
+        return 0;
+
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
+        char *token = strtok(line, ":");
+        if (strcmp(userName, token) == 0)
+        {
+            token = strtok(NULL, ":");
+            if(strcmp(encrypt_sha512(password), token) == 0){
+                return 1;
+            }
+        }
+    }
+
+    fclose(fp);
+    if (line)
+        free(line);
+    return 0;
+}
+
 int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
 {
     // tạo đường dẫn tuyệt đối cho file passwd
@@ -57,11 +86,10 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
         return 0;
     }
 
-    // if (is_user_exist(userName, passwd_file_path) == 1)
-    // {
-    //     printf("okok");
-    //     return 0;
-    // }
+    if (is_user_exist(userName, rootPath) == 1)
+    {
+        return 0;
+    }
 
     // tiến hành mở file và thêm user
     FILE *file_ptr = fopen(passwd_file_path, "a");
