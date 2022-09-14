@@ -60,3 +60,7 @@ void progress_bar(float iteration, float total){
 void clear_c(){
     printf("\e[1;1H\e[2J");
 }
+
+void aurora_shell(){
+    
+}
