@@ -2,7 +2,8 @@
 #include "stdlib.h"
 #include "string.h"
 
-#include "../utils/Constants.h"
+#include "../constants.h"
+
 #include "../utils/aucolors.h"
 
 const char *OS_NAME_L1 = "  ___                            _____        _____ _____ ";
@@ -53,8 +54,9 @@ void progress_bar(float iteration, float total){
     if (iteration == total){
         printf("\n");
     }
+    
+}
 
-
-
-
+void clear_c(){
+    printf("\e[1;1H\e[2J");
 }
