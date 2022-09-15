@@ -20,6 +20,17 @@ char *create_passwd_file_path(const char *rootPath)
     return passwd_file_path;
 }
 
+char *create_hostname_file_path(const char *rootPath)
+{
+    // tạo đường dẫn tuyệt đối cho file passwd
+    char *passwd_file_path;
+    passwd_file_path = malloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(HOST_NAME_FILE) + 1);
+    strcpy(passwd_file_path, rootPath);
+    strcat(passwd_file_path, ETC_DIR);
+    strcat(passwd_file_path, HOST_NAME_FILE);
+    return passwd_file_path;
+}
+
 int is_user_exist(char *userName,const char *rootPath)
 {
     FILE *fp;
@@ -114,4 +125,25 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
     }
 
     return 0;
+}
+
+char * get_host_name(const char *rootPath){
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen(create_hostname_file_path(rootPath), "r");
+    if (fp == NULL)
+        return "";
+
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
+        return line;
+    }
+
+    fclose(fp);
+    if (line)
+        free(line);
+    return "";
 }

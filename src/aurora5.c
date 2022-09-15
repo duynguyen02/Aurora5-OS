@@ -11,6 +11,7 @@
 #include "libs/os/first_setup.h"
 #include "libs/utils/common.h"
 #include "libs/user/users_manager.h"
+#include "libs/command/command_processer.h"
 
 const char *OS_NAME = "Aurora5-OS";
 
@@ -77,15 +78,57 @@ int main()
         }
     }
 
+    clear_c();
+
     // khởi tạo người dùng hiện tại
-    char *CURRENT_USER = user_name;
+    char *CURRENT_USER = (char*)calloc(strlen(user_name)+1,sizeof(char));
+
+    strcpy(CURRENT_USER, user_name);
+
+    // hostname
+    char *HOST_NAME = get_host_name(ROOT_DIR);
 
     free(user_name);
+    free(password);
+
+    // giải phóng stdin
+    fflush(stdin);
+    int c;
+    while((c = getchar()) != '\n' && c != EOF);
 
     // cấp phát bộ nhớ cho câu lệnh
     char *command = (char*)calloc(MAX_BUFFER_SIZE,sizeof(char));
-
     
+    int exit_code = 0;
+
+
+    while (exit_code == 0 || exit_code == 2)
+    {
+        aurora_shell(CURRENT_USER, HOST_NAME, ROOT_DIR, CURRENT_DIR, exit_code);
+        // fgets(command,sizeof(command),stdin);
+
+        fgets (command, MAX_BUFFER_SIZE, stdin);
+
+        char **args =  get_args(command);
+
+        // nếu không nhập lên gì cả
+        if (strlen(*args) == 1){
+            exit_code = 0;
+            continue;
+        }
+
+        
+    
+
+        
+
+        // free(args);
+
+    }
+
+    free(command);
+    
+
 
     return 0;
 }
