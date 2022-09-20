@@ -1,7 +1,7 @@
 all: aurora5
 
-aurora5: aurora5.c  aucolors.o common.o security.o first_setup.o shell.o users_manager.o command_processer.o
-	gcc -lcrypt aurora5.c  aucolors.o common.o security.o -lcrypt first_setup.o shell.o users_manager.o command_processer.o -o aurora5
+aurora5: aurora5.c  aucolors.o common.o security.o first_setup.o shell.o users_manager.o command_processer.o process_manager.o
+	gcc -lcrypt aurora5.c  aucolors.o common.o security.o -lcrypt first_setup.o shell.o users_manager.o command_processer.o process_manager.o -o aurora5
 
 first_setup.o: libs/os/first_setup.c
 	gcc -c libs/os/first_setup.c
@@ -23,6 +23,9 @@ users_manager.o: libs/user/users_manager.c
 
 command_processer.o: libs/command/command_processer.c
 	gcc -c libs/command/command_processer.c
+
+process_manager.o: libs/process/process_manager.c
+	gcc -c libs/process/process_manager.c
 
 clean: 
 	rm *.o

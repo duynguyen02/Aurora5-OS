@@ -4,6 +4,7 @@
 #include <curses.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/statvfs.h>
 
 #include "libs/constants.h"
 
@@ -46,6 +47,8 @@ int main()
 
     free(etc_absolute_path);
 
+
+    // TODO: viết vào 1 file riêng
     // Đăng nhập vào hệ thống
 
     char *user_name;
@@ -109,20 +112,7 @@ int main()
 
         fgets (command, MAX_BUFFER_SIZE, stdin);
 
-        char **args =  get_args(command);
-
-        // nếu không nhập lên gì cả
-        if (strlen(*args) == 1){
-            exit_code = 0;
-            continue;
-        }
-
-        
-    
-
-        
-
-        // free(args);
+        exit_code = execute_command(command, ROOT_DIR);
 
     }
 
