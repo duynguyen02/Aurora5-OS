@@ -1,6 +1,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 typedef struct
 {
@@ -31,7 +33,6 @@ int run_thread(const char *binPath, char **argv)
         // Fork returns 0 in the child process.  Child executes this.
 
         // new argv array for the child process
-        const char *argv[] = {"", "", "", NULL};
 
         // now start executing some other program
         exit_code =  execv(binPath, argv);

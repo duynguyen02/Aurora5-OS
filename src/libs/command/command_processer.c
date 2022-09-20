@@ -57,10 +57,14 @@ int execute_command(char *command, char *rootPath)
     // nếu không có thì xuất command not found
     char * bin_path = create_bin_file_path(rootPath, *args);
     char *start = &bin_path[0];
-    char *end = &bin_path[strlen(bin_path)-1];
+    char *end = &bin_path[strlen(bin_path)];
 
     char *path = calloc(MAX_BUFFER_SIZE, sizeof(char));
     memcpy(path, start, end - start);
+
+    if (path[strlen(path)-1] == 10){
+        path[strlen(path)-1] = '\0';
+    }
 
     if (is_file_exists(path) == 0)
     {
