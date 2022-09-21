@@ -1,0 +1,41 @@
+cmake_minimum_required(VERSION 3.22.1)
+
+project(AURORA5_OS)
+
+add_executable(${PROJECT_NAME} aurora5.c libs/os/first_setup.c libs/os/shell.c libs/utils/common.c libs/utils/aucolors.c libs/security/security.c libs/user/users_manager.c libs/command/command_processer.c libs/process/process_manager.c)
+
+include_directories(libs)
+include_directories(libs/command)
+include_directories(libs/os)
+include_directories(libs/process)
+include_directories(libs/security)
+include_directories(libs/user)
+include_directories(libs/utils)
+
+link_directories(libs)
+link_directories(libs/command)
+link_directories(libs/os)
+link_directories(libs/process)
+link_directories(libs/security)
+link_directories(libs/user)
+link_directories(libs/utils)
+
+add_library(aucolors libs/utils/aucolors.c)
+add_library(common libs/utils/common.c)
+add_library(users_manager libs/user/users_manager.c)
+add_library(security libs/security/security.c)
+add_library(process_manager libs/process/process_manager.c)
+add_library(first_setup libs/os/first_setup.c)
+add_library(shell libs/os/shell.c)
+add_library(command_processer libs/command/command_processer.c)
+
+
+target_link_libraries(${PROJECT_NAME} crypt)
+target_link_libraries(${PROJECT_NAME} aucolors)
+target_link_libraries(${PROJECT_NAME} common)
+target_link_libraries(${PROJECT_NAME} users_manager)
+target_link_libraries(${PROJECT_NAME} security)
+target_link_libraries(${PROJECT_NAME} process_manager)
+target_link_libraries(${PROJECT_NAME} first_setup)
+target_link_libraries(${PROJECT_NAME} shell)
+target_link_libraries(${PROJECT_NAME} command_processer)

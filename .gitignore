@@ -2,10 +2,16 @@
 
 *.o
 
-/etc
+src/etc
 
-/bin
+src/bin
 
-/home
+src/home
 
-/root
+src/root
+
+aurora5
+
+src/out
+
+src/build

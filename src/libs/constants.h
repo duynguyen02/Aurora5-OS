@@ -16,6 +16,7 @@
     // các file thư mục con
     #define HOST_NAME_FILE "/hostname"
     #define PASSWD_FILE "/passwd"
+    #define USER_SHELL_FILE "/usershell.bin"
 
 
     // định nghĩa các thành phần thư mục bin //
