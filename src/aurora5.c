@@ -16,7 +16,9 @@
 
 const char *OS_NAME = "Aurora5-OS";
 
-const char *OS_VERSION = "1.0.0";
+const char *OS_VERSION = "1.1.0";
+
+
 
 int main()
 {
@@ -99,26 +101,39 @@ int main()
     int c;
     while((c = getchar()) != '\n' && c != EOF);
 
+    // khởi tạo thông tin shell
+    UserInfo *user = malloc(sizeof(UserInfo));
+
+    strcpy(user->current_user, CURRENT_USER);
+    strcpy(user->host_name, get_host_name(ROOT_DIR));
+    strcpy(user->root_dir, ROOT_DIR);
+    strcpy(user->current_dir, get_user_dir(ROOT_DIR, CURRENT_USER));
+
+    
     // cấp phát bộ nhớ cho câu lệnh
     char *command = (char*)calloc(MAX_BUFFER_SIZE,sizeof(char));
     
     int exit_code = 0;
 
+    add_user_to_shell(ROOT_DIR, *user);
 
     while (exit_code == 0 || exit_code == 2)
     {
-        aurora_shell(CURRENT_USER, HOST_NAME, ROOT_DIR, CURRENT_DIR, exit_code);
-        // fgets(command,sizeof(command),stdin);
+        aurora_shell(user->current_user, user->host_name, user->root_dir, user->current_dir, exit_code);
 
         fgets (command, MAX_BUFFER_SIZE, stdin);
 
         exit_code = execute_command(command, ROOT_DIR);
 
+        user = get_current_user(ROOT_DIR);
+        if (user == NULL){
+            exit_code = 1;
+        }
+
     }
 
     free(command);
     
-
-
     return 0;
 }
+

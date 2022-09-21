@@ -23,7 +23,7 @@ char *create_bin_file_path(const char *rootPath, const char *command)
     return bin_dir_path;
 }
 
-char **get_args(char *command)
+char **get_args(char *command, char * rootPath)
 {
     char **tokens = (char **)malloc(MAX_BUFFER_SIZE * sizeof(char *));
     char *cmd = calloc(MAX_BUFFER_SIZE, sizeof(char));
@@ -38,14 +38,16 @@ char **get_args(char *command)
         index++;
     }
 
-    *(tokens + index) = NULL;
+    *(tokens + index) = rootPath;
+    *(tokens + index + 1) = NULL;
+
 
     return tokens;
 }
 
 int execute_command(char *command, char *rootPath)
 {
-    char **args = get_args(command);
+    char **args = get_args(command, rootPath);
 
     // nếu không nhập lệnh gì cả
     if (strlen(*args) == 1)
@@ -71,6 +73,7 @@ int execute_command(char *command, char *rootPath)
         printf("Command not found: %s\n", *args);
         return 2;
     }
+
 
     return run_thread(path, args);
 }

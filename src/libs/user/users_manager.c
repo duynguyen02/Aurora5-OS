@@ -9,6 +9,8 @@
 
 #include "users_manager.h"
 
+
+
 char *create_passwd_file_path(const char *rootPath)
 {
     // tạo đường dẫn tuyệt đối cho file passwd
@@ -106,7 +108,6 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
     FILE *file_ptr = fopen(passwd_file_path, "a");
     if (file_ptr != NULL)
     {
-        printf("mo file");
         // mã hóa mật khẩu
         char *encrypt_pass = encrypt_sha512(password);
         char *isAdminStr = (isAdmin == 1) ? "1" : "0";
@@ -146,4 +147,87 @@ char * get_host_name(const char *rootPath){
     if (line)
         free(line);
     return "";
+}
+
+char * get_user_dir(const char *rootPath , const char *username){
+    char * user_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
+    
+    if (strcmp(username, ADMIN_USER_NAME) == 0){
+        strcpy(user_path, rootPath);
+        return user_path;
+    }
+
+    char * home_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
+
+    strcpy(home_path, HOME_DIR);
+    strcat(home_path, "/");
+    strcat(home_path, username);
+
+
+    strcpy(user_path, rootPath);
+    strcat(user_path, home_path);   
+    
+    return user_path;
+}
+
+int add_user_to_shell(const char * rootPath ,UserInfo user){
+    char * user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+
+    strcpy(user_shell_path, rootPath);
+    strcat(user_shell_path, ETC_DIR);
+    strcat(user_shell_path, USER_SHELL_FILE);
+
+    UserInfo users[1];
+
+    users[0] = user;
+
+    FILE *file;
+    file = fopen(user_shell_path, "w");
+
+    if(file == NULL){
+        return 0;
+    }
+
+
+    fwrite(users,sizeof(UserInfo), 1, file);
+
+    fclose(file);
+
+    return 1;
+}
+
+
+UserInfo* get_current_user(const char * rootPath){
+    char * user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+
+    strcpy(user_shell_path, rootPath);
+    strcat(user_shell_path, ETC_DIR);
+    strcat(user_shell_path, USER_SHELL_FILE);
+
+    FILE *file;
+    file = fopen(user_shell_path, "r");
+
+    if(file == NULL){
+        return NULL;
+    }
+
+    unsigned int n_stud = 0;
+
+    UserInfo users[MAX_OF_USER];
+
+    while (fread(&users[n_stud], sizeof(UserInfo), 1, file) == 1)
+    {
+        n_stud++;
+    }
+
+
+    fclose(file);
+
+    if (n_stud == 0){
+        return NULL;
+    }
+
+    UserInfo *l_user = &users[n_stud-1];
+
+    return l_user;
 }
