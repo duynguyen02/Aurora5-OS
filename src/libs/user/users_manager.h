@@ -16,6 +16,7 @@ int is_correct_password(char *userName, char *password, const char *rootPath);
 char *get_host_name(const char *rootPath);
 char *get_user_dir(const char *rootPath, const char *username);
 int add_user_to_shell(const char * rootPath ,UserInfo user);
+int append_user_to_shell(const char * rootPath ,UserInfo user);
 UserInfo* get_current_user(const char * rootPath);
 int is_admin(char *userName,const char *rootPath);
 #endif

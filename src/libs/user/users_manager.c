@@ -266,6 +266,35 @@ int add_user_to_shell(const char * rootPath ,UserInfo user){
 }
 
 /**
+ * Thêm người dùng đăng nhập vào shell
+ */
+int append_user_to_shell(const char * rootPath ,UserInfo user){
+    char * user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+
+    strcpy(user_shell_path, rootPath);
+    strcat(user_shell_path, ETC_DIR);
+    strcat(user_shell_path, USER_SHELL_FILE);
+
+    UserInfo users[1];
+
+    users[0] = user;
+
+    FILE *file;
+    file = fopen(user_shell_path, "ab");
+
+    if(file == NULL){
+        return 0;
+    }
+
+
+    fwrite(users,sizeof(UserInfo), 1, file);
+
+    fclose(file);
+
+    return 1;
+}
+
+/**
  * Lấy thông tin người dùng hiện tại đang chạy shell
  */
 UserInfo* get_current_user(const char * rootPath){
