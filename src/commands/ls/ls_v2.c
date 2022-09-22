@@ -3,66 +3,13 @@
 #include <string.h>
 #include <dirent.h>
 
-#define ETC_DIR "/etc"
-#define USER_SHELL_FILE "/usershell.bin"
+#include "../../libs/constants.h"
+#include "../../libs/utils/common.h"
+#include "../../libs/utils/aucolors.h"
 
-#define MAX_OF_USER 100
-#define MAX_BUFFER_SIZE 100
 
-#define AUCOLORS_H_
-#define RED "\x1B[31m"
-#define GRN "\x1B[32m"
-#define YEL "\x1B[33m"
-#define BLU "\x1B[34m"
-#define MAG "\x1B[35m"
-#define CYN "\x1B[36m"
-#define WHT "\x1B[37m"
-#define RESET "\x1B[0m"
 
-typedef struct
-{
-    char current_user[MAX_BUFFER_SIZE];
-    char host_name[MAX_BUFFER_SIZE];
-    char root_dir[MAX_BUFFER_SIZE];
-    char current_dir[MAX_BUFFER_SIZE];
-} UserInfo;
-
-UserInfo *get_current_user(const char *rootPath)
-{
-    char *user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
-
-    strcpy(user_shell_path, rootPath);
-    strcat(user_shell_path, ETC_DIR);
-    strcat(user_shell_path, USER_SHELL_FILE);
-
-    FILE *file;
-    file = fopen(user_shell_path, "r");
-
-    if (file == NULL)
-    {
-        return NULL;
-    }
-
-    unsigned int n_stud = 0;
-
-    UserInfo users[MAX_OF_USER];
-
-    while (fread(&users[n_stud], sizeof(UserInfo), 1, file) == 1)
-    {
-        n_stud++;
-    }
-
-    fclose(file);
-
-    if (n_stud == 0)
-    {
-        return NULL;
-    }
-
-    UserInfo *l_user = &users[n_stud-1];
-
-    return l_user;
-}
+#include "../../libs/user/users_manager.h"
 
 int list_current_dir(char *rootPath)
 {
@@ -106,6 +53,7 @@ int list_current_dir(char *rootPath)
     }
     return 2;
 }
+
 
 int main(int argc, char **argv)
 {

@@ -108,8 +108,9 @@ int main()
     strcpy(user->host_name, get_host_name(ROOT_DIR));
     strcpy(user->root_dir, ROOT_DIR);
     strcpy(user->current_dir, get_user_dir(ROOT_DIR, CURRENT_USER));
+    user->is_admin = (is_admin(CURRENT_USER, ROOT_DIR) == 1) ? 1 : 0;
 
-    
+
     // cấp phát bộ nhớ cho câu lệnh
     char *command = (char*)calloc(MAX_BUFFER_SIZE,sizeof(char));
     
