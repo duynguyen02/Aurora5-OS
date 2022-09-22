@@ -10,6 +10,12 @@
     #define IS_NOT_ADMIN 0
     #define IS_ADMIN 1
 
+    // định nghĩa các EXIT_STATUS //
+    #define SUCESS_EXIT_STATUS 0
+    #define ERROR_EXIT_STATUS 2
+    #define EXIT_STATUS 1
+
+
 
     // định nghĩa các thành phần thư mục etc //
     #define ETC_DIR "/etc"

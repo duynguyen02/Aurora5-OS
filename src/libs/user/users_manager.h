@@ -7,6 +7,7 @@ typedef struct
     char host_name[MAX_BUFFER_SIZE];
     char root_dir[MAX_BUFFER_SIZE];
     char current_dir[MAX_BUFFER_SIZE];
+    int is_admin;
 } UserInfo;
 
 int is_user_exist(char *userName, const char *rootPath);
@@ -16,4 +17,5 @@ char *get_host_name(const char *rootPath);
 char *get_user_dir(const char *rootPath, const char *username);
 int add_user_to_shell(const char * rootPath ,UserInfo user);
 UserInfo* get_current_user(const char * rootPath);
+int is_admin(char *userName,const char *rootPath);
 #endif
