@@ -37,19 +37,22 @@ gcc -o out/build/clear clear/clear.c;
 gcc -o out/build/echo echo/echo.c;
 
 # lệnh exit
-gcc -o out/build/exit exit/exit.c;
+# gcc -o out/build/exit exit/exit.c;
 
 # lệnh exit_v2
-gcc -o out/build/exit_v2 exit/exit_v2.c ./libs/users_manager.a;
+gcc -o out/build/exit exit/exit_v2.c ./libs/users_manager.a;
 
 # lệnh ls_v2
-gcc -o out/build/ls_v2 ls/ls_v2.c libs/users_manager.a libs/security.a -lcrypt libs/common.a 
+gcc -o out/build/ls ls/ls_v2.c libs/users_manager.a libs/security.a -lcrypt libs/common.a 
 
 # lệnh ls 
-gcc -o out/build/ls ls/ls.c
+# gcc -o out/build/ls ls/ls.c
 
 # lệnh useradd
 gcc -o out/build/useradd useradd/useradd.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
+
+# lệnh su
+gcc -o out/build/su su/su.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
 
 
 ### Xoá toàn bộ file object ###

@@ -1,6 +1,8 @@
 #include "string.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "../constants.h"
 
@@ -172,6 +174,14 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
         strcat(user_info, "\n");
         fputs(user_info, file_ptr);
         fclose(file_ptr);
+        char * user_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
+        strcpy(user_path, rootPath);
+        strcat(user_path, HOME_DIR);
+        strcat(user_path, "/");
+        strcat(user_path, userName);
+        if (strcmp(userName, ADMIN_USER_NAME) != 0){
+            mkdir(user_path, 0777);
+        }
         return 1;
     }
 
@@ -242,6 +252,35 @@ int add_user_to_shell(const char * rootPath ,UserInfo user){
 
     FILE *file;
     file = fopen(user_shell_path, "w");
+
+    if(file == NULL){
+        return 0;
+    }
+
+
+    fwrite(users,sizeof(UserInfo), 1, file);
+
+    fclose(file);
+
+    return 1;
+}
+
+/**
+ * Thêm người dùng đăng nhập vào shell
+ */
+int append_user_to_shell(const char * rootPath ,UserInfo user){
+    char * user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+
+    strcpy(user_shell_path, rootPath);
+    strcat(user_shell_path, ETC_DIR);
+    strcat(user_shell_path, USER_SHELL_FILE);
+
+    UserInfo users[1];
+
+    users[0] = user;
+
+    FILE *file;
+    file = fopen(user_shell_path, "ab");
 
     if(file == NULL){
         return 0;
