@@ -1,6 +1,8 @@
 #include "string.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "../constants.h"
 
@@ -172,6 +174,14 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
         strcat(user_info, "\n");
         fputs(user_info, file_ptr);
         fclose(file_ptr);
+        char * user_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
+        strcpy(user_path, rootPath);
+        strcat(user_path, HOME_DIR);
+        strcat(user_path, "/");
+        strcat(user_path, userName);
+        if (strcmp(userName, ADMIN_USER_NAME) != 0){
+            mkdir(user_path, 0777);
+        }
         return 1;
     }
 
