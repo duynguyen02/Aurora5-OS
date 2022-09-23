@@ -19,4 +19,5 @@ int add_user_to_shell(const char * rootPath ,UserInfo user);
 int append_user_to_shell(const char * rootPath ,UserInfo user);
 UserInfo* get_current_user(const char * rootPath);
 int is_admin(char *userName,const char *rootPath);
+int replace_the_last_shell_user(const char *rootPath, UserInfo user);
 #endif

@@ -11,7 +11,6 @@
 
 #include "users_manager.h"
 
-
 /**
  * tạo đường dẫn cho file passwd
  */
@@ -43,7 +42,7 @@ char *create_hostname_file_path(const char *rootPath)
 /**
  * Kiểm tra xem người dùng có tồn tại hay không
  */
-int is_user_exist(char *userName,const char *rootPath)
+int is_user_exist(char *userName, const char *rootPath)
 {
     FILE *fp;
     char *line = NULL;
@@ -72,7 +71,7 @@ int is_user_exist(char *userName,const char *rootPath)
 /**
  * kiểm tra xem mật khẩu người dùng có đúng không
  */
-int is_correct_password(char *userName, char *password,const char *rootPath)
+int is_correct_password(char *userName, char *password, const char *rootPath)
 {
     FILE *fp;
     char *line = NULL;
@@ -89,7 +88,8 @@ int is_correct_password(char *userName, char *password,const char *rootPath)
         if (strcmp(userName, token) == 0)
         {
             token = strtok(NULL, ":");
-            if(strcmp(encrypt_sha512(password), token) == 0){
+            if (strcmp(encrypt_sha512(password), token) == 0)
+            {
                 return 1;
             }
         }
@@ -104,7 +104,7 @@ int is_correct_password(char *userName, char *password,const char *rootPath)
 /**
  * kiểm tra xem người dùng có phải admin
  */
-int is_admin(char *userName,const char *rootPath)
+int is_admin(char *userName, const char *rootPath)
 {
     FILE *fp;
     char *line = NULL;
@@ -122,10 +122,12 @@ int is_admin(char *userName,const char *rootPath)
         {
             token = strtok(NULL, ":");
             token = strtok(NULL, ":");
-            if (strcmp(token, "1\n") == 0){
+            if (strcmp(token, "1\n") == 0)
+            {
                 return 1;
             }
-            else{
+            else
+            {
                 return 0;
             }
         }
@@ -174,12 +176,13 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
         strcat(user_info, "\n");
         fputs(user_info, file_ptr);
         fclose(file_ptr);
-        char * user_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
+        char *user_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
         strcpy(user_path, rootPath);
         strcat(user_path, HOME_DIR);
         strcat(user_path, "/");
         strcat(user_path, userName);
-        if (strcmp(userName, ADMIN_USER_NAME) != 0){
+        if (strcmp(userName, ADMIN_USER_NAME) != 0)
+        {
             mkdir(user_path, 0777);
         }
         return 1;
@@ -191,7 +194,8 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
 /**
  * Lấy tên của hostname
  */
-char * get_host_name(const char *rootPath){
+char *get_host_name(const char *rootPath)
+{
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -213,34 +217,36 @@ char * get_host_name(const char *rootPath){
 }
 
 /**
- * Lấy đường dẫn của thư mục người dùng 
+ * Lấy đường dẫn của thư mục người dùng
  */
-char * get_user_dir(const char *rootPath , const char *username){
-    char * user_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
-    
-    if (strcmp(username, ADMIN_USER_NAME) == 0){
+char *get_user_dir(const char *rootPath, const char *username)
+{
+    char *user_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
+
+    if (strcmp(username, ADMIN_USER_NAME) == 0)
+    {
         strcpy(user_path, rootPath);
         return user_path;
     }
 
-    char * home_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
+    char *home_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
 
     strcpy(home_path, HOME_DIR);
     strcat(home_path, "/");
     strcat(home_path, username);
 
-
     strcpy(user_path, rootPath);
-    strcat(user_path, home_path);   
-    
+    strcat(user_path, home_path);
+
     return user_path;
 }
 
 /**
  * Thêm người dùng đăng nhập vào shell
  */
-int add_user_to_shell(const char * rootPath ,UserInfo user){
-    char * user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+int add_user_to_shell(const char *rootPath, UserInfo user)
+{
+    char *user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
 
     strcpy(user_shell_path, rootPath);
     strcat(user_shell_path, ETC_DIR);
@@ -253,12 +259,12 @@ int add_user_to_shell(const char * rootPath ,UserInfo user){
     FILE *file;
     file = fopen(user_shell_path, "w");
 
-    if(file == NULL){
+    if (file == NULL)
+    {
         return 0;
     }
 
-
-    fwrite(users,sizeof(UserInfo), 1, file);
+    fwrite(users, sizeof(UserInfo), 1, file);
 
     fclose(file);
 
@@ -268,8 +274,9 @@ int add_user_to_shell(const char * rootPath ,UserInfo user){
 /**
  * Thêm người dùng đăng nhập vào shell
  */
-int append_user_to_shell(const char * rootPath ,UserInfo user){
-    char * user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+int append_user_to_shell(const char *rootPath, UserInfo user)
+{
+    char *user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
 
     strcpy(user_shell_path, rootPath);
     strcat(user_shell_path, ETC_DIR);
@@ -282,12 +289,12 @@ int append_user_to_shell(const char * rootPath ,UserInfo user){
     FILE *file;
     file = fopen(user_shell_path, "ab");
 
-    if(file == NULL){
+    if (file == NULL)
+    {
         return 0;
     }
 
-
-    fwrite(users,sizeof(UserInfo), 1, file);
+    fwrite(users, sizeof(UserInfo), 1, file);
 
     fclose(file);
 
@@ -297,8 +304,9 @@ int append_user_to_shell(const char * rootPath ,UserInfo user){
 /**
  * Lấy thông tin người dùng hiện tại đang chạy shell
  */
-UserInfo* get_current_user(const char * rootPath){
-    char * user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+UserInfo *get_current_user(const char *rootPath)
+{
+    char *user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
 
     strcpy(user_shell_path, rootPath);
     strcat(user_shell_path, ETC_DIR);
@@ -307,7 +315,8 @@ UserInfo* get_current_user(const char * rootPath){
     FILE *file;
     file = fopen(user_shell_path, "r");
 
-    if(file == NULL){
+    if (file == NULL)
+    {
         return NULL;
     }
 
@@ -320,14 +329,68 @@ UserInfo* get_current_user(const char * rootPath){
         n_stud++;
     }
 
-
     fclose(file);
 
-    if (n_stud == 0){
+    if (n_stud == 0)
+    {
         return NULL;
     }
 
-    UserInfo *l_user = &users[n_stud-1];
+    UserInfo *l_user = &users[n_stud - 1];
 
     return l_user;
+}
+
+int replace_the_last_shell_user(const char *rootPath, UserInfo user)
+{
+    char *user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+
+    strcpy(user_shell_path, rootPath);
+    strcat(user_shell_path, ETC_DIR);
+    strcat(user_shell_path, USER_SHELL_FILE);
+
+    // đọc danh sách người dùng đang đăng nhập shell
+    FILE *file;
+    file = fopen(user_shell_path, "r");
+
+    if (file == NULL)
+    {
+        return 0;
+    }
+
+    unsigned int n_stud = 0;
+
+    UserInfo users[MAX_OF_USER];
+
+    while (fread(&users[n_stud], sizeof(UserInfo), 1, file) == 1)
+    {
+        n_stud++;
+    }
+
+    fclose(file);
+
+    // nếu không còn người thì trả về false
+    if (n_stud == 0)
+    {
+        return 0;
+    }
+
+    // còn thì xóa người dùng theo cơ chế stack
+    file = fopen(user_shell_path, "w");
+
+    if (file == NULL)
+    {
+        return 0;
+    }
+
+    UserInfo renew_users[n_stud];
+    for (int i = 0; i < n_stud; i++)
+    {
+        renew_users[i] = users[i];
+    }
+    renew_users[n_stud-1] = user;
+    fwrite(renew_users, sizeof(UserInfo), n_stud, file);
+
+    fclose(file);
+    return 1;
 }
