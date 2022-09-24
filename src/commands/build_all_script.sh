@@ -54,6 +54,27 @@ gcc -o out/build/useradd useradd/useradd.c libs/users_manager.a libs/security.a 
 # lệnh su
 gcc -o out/build/su su/su.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
 
+# lệnh cd
+gcc -o out/build/cd cd/cd.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
+
+# lệnh userdel
+gcc -o out/build/userdel userdel/userdel.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
+
+# lệnh touch	
+gcc -o out/build/touch touch/touch.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
+
+
+# lệnh rm
+gcc -o out/build/rm rm/rm.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
+
+# lệnh mkdir
+gcc -o out/build/mkdir mkdir/mkdir.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
+
+# lệnh rmdir
+gcc -o out/build/rmdir rmdir/rmdir.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
+
+# lệnh zhuling
+gcc -o out/build/zhuling zhuling/zhuling.c -lcurl
 
 ### Xoá toàn bộ file object ###
 rm *.o;
