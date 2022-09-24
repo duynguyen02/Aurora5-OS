@@ -74,7 +74,7 @@ gcc -o out/build/mkdir mkdir/mkdir.c libs/users_manager.a libs/security.a -lcryp
 gcc -o out/build/rmdir rmdir/rmdir.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
 
 # lệnh zhuling
-gcc -o out/build/zhuling zhuling/zhuling.c -lcurl
+gcc -o out/build/zhuling zhuling/zhuling.c -lcurl libs/common.a
 
 ### Xoá toàn bộ file object ###
 rm *.o;

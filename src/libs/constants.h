@@ -3,7 +3,7 @@
 
     // các ràng buộc bộ nhớ //
     #define MAX_CWD_SIZE 255
-    #define MAX_BUFFER_SIZE 100
+    #define MAX_BUFFER_SIZE 255
 
     // định nghĩa quản trị viên //
     #define ADMIN_USER_NAME "root"
