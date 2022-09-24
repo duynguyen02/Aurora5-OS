@@ -192,6 +192,45 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
 }
 
 /**
+ * xóa người dùng
+ */
+int remove_user(char *userName, const char *rootPath)
+{
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen(create_passwd_file_path(rootPath), "r");
+    if (fp == NULL)
+        return 0;
+
+    char * users_str = calloc(MAX_BUFFER_SIZE, sizeof(char));
+
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
+        char * temp_line = calloc(MAX_BUFFER_SIZE, sizeof(char));
+        strcpy(temp_line, line);
+
+        char *token = strtok(line, ":");
+        if (strcmp(userName, token) != 0)
+        {
+            strcat(users_str, temp_line);
+        }
+    }
+
+    fclose(fp);
+    if (line)
+        free(line);
+
+    fp = fopen(create_passwd_file_path(rootPath), "w");
+    fputs(users_str, fp);
+    fclose(fp);
+
+    return 1;
+}
+
+/**
  * Lấy tên của hostname
  */
 char *get_host_name(const char *rootPath)
@@ -388,9 +427,56 @@ int replace_the_last_shell_user(const char *rootPath, UserInfo user)
     {
         renew_users[i] = users[i];
     }
-    renew_users[n_stud-1] = user;
+    renew_users[n_stud - 1] = user;
     fwrite(renew_users, sizeof(UserInfo), n_stud, file);
 
     fclose(file);
     return 1;
+}
+
+/**
+ * Kiểm tra xem user có đang hoạt động trong shell hay không
+ */
+int is_user_active(char *username, char *rootPath)
+{
+    char *user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
+
+    strcpy(user_shell_path, rootPath);
+    strcat(user_shell_path, ETC_DIR);
+    strcat(user_shell_path, USER_SHELL_FILE);
+
+    // đọc danh sách người dùng đang đăng nhập shell
+    FILE *file;
+    file = fopen(user_shell_path, "r");
+
+    if (file == NULL)
+    {
+        return 0;
+    }
+
+    unsigned int n_stud = 0;
+
+    UserInfo users[MAX_OF_USER];
+
+    while (fread(&users[n_stud], sizeof(UserInfo), 1, file) == 1)
+    {
+        n_stud++;
+    }
+
+    fclose(file);
+
+    // nếu không còn người thì trả về false
+    if (n_stud == 0)
+    {
+        return 0;
+    }
+
+    for (int i = 0; i<n_stud;i++){
+        if (strcmp(username, users[i].current_user) == 0){
+            return 1;
+        }
+    }
+
+    return 0;
+
 }
