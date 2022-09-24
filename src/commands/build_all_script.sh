@@ -57,6 +57,8 @@ gcc -o out/build/su su/su.c libs/users_manager.a libs/security.a -lcrypt libs/co
 # lệnh cd
 gcc -o out/build/cd cd/cd.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
 
+# lệnh userdel
+gcc -o out/build/userdel userdel/userdel.c libs/users_manager.a libs/security.a -lcrypt libs/common.a
 
 ### Xoá toàn bộ file object ###
 rm *.o;
