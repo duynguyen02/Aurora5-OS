@@ -23,7 +23,7 @@ const char *OS_VERSION = "1.1.0";
 int main()
 {
     // hiển thị tin nhắn chào mừng
-    welcome_message(OS_VERSION);
+    // welcome_message(OS_VERSION);
 
     // lấy thư mục hiện hành (giả định là thư mục gốc)
     char *ROOT_DIR = get_current_dir();
@@ -115,6 +115,8 @@ int main()
     char *command = (char*)calloc(MAX_BUFFER_SIZE,sizeof(char));
     
     int exit_code = 0;
+
+    welcome_message(OS_VERSION);
 
     add_user_to_shell(ROOT_DIR, *user);
 
