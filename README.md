@@ -2,7 +2,26 @@
 ![aurora5_os](/img/aurora5_os.png)
 ## Mục lục
 - [Đề tài](#đề-tài)
+- [Tác giả](#tác-giả)
 - [Mô tả](#mô-tả)
+- [Cấu trúc thư mục và tệp tin Aurora5-OS](#cấu-trúc-thư-mục-và-tệp-tin-aurora5-os)
+    - [Thư mục /bin](#thư-mục-bin) 
+    - [Thư mục /etc](#thư-mục-etc) 
+    - [Thư mục /home](#thư-mục-home) 
+    - [Thư mục /root](#thư-mục-root) 
+    - [Tệp AURORA5-OS](#tệp-aurora5os)
+    - [Tệp etc/hostname](#tệp-etchostname)
+    - [Tệp etc/passwd](#tệp-etcpasswd)
+    - [Tệp etc/usershell.bin](#tệp-etcusershellbin)
+- [Cơ chế của Aurora5-OS](#cơ-chế-của-aurora5-os)
+    - [Giao diện Aurora5-OS Shell](#giao-diện-aurora5-os-shell)
+    - [Lưu trữ người dùng](#lưu-trữ-người-dùng)
+    - [Lưu trữ người dùng đăng nhập Shell](#lưu-trữ-người-dùng-đăng-nhập-shell)
+
+    - [Tệp /etc/usershell.bin](#tệp-etcusershellbin)
+    - [Sự phụ thuộc của các tệp thực thi](#sự-phụ-thuộc-của-các-tệp-thực-thi)
+    - [Cơ chế thực thi dòng lệnh của Aurora5-OS Shell](#cơ-chế-thực-thi-dòng-lệnh-của-aurora5-os-shell)
+
 - [Cài đặt và sử dụng](#cài-đặt-và-sử-dụng)
     - [Yêu cầu hệ điều hành](#yêu-cầu-hệ-điều-hành)
     - [Công cụ và thư viện](#công-cụ-và-thư-viện-thực-hiện-các-câu-lệnh-bên-dưới-nếu-trong-quá-trình-chạy-bị-lỗi)
@@ -53,7 +72,7 @@
 ### Tệp etc/usershell.bin
 - Chứa thông tin các người dùng đang đăng nhập vào Shell.
 ## Cơ chế của Aurora5-OS
-### Shell
+### Giao diện Aurora5-OS Shell
 ![aurora5_os](/img/aurora5_os_shell_mach.png)
 - Exit code: mỗi câu lệnh khi vào trạng thái kết thúc sẽ trả về 1 con số biểu hiện trạng thái thực thi của câu lệnh bao gồm: 128(kết thúc chương trình), 0(hoàn thành), 1(có lỗi đã xảy ra), 2(thiếu các đối số cần thiết), 126(câu lệnh không thể thực thi), 127(không tìm thấy câu lệnh) và sẽ được biểu hiện qua ký hiệu `✓` (thành công) và `✗` (có lỗi xảy ra)
 - Tên máy chủ: hiển thị tên máy chủ được lưu trữ trong tệp [/etc/hostname](#cấu-trúc-thư-mục-và-tệp-tin-aurora5-os) 
