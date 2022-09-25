@@ -1,3 +1,8 @@
+/**
+ * @author Nguyễn Phạm Xuân Hiền
+ * Đăng xuất người dùng khỏi shell
+ */
+
 #include "stdio.h"
 #include <stdlib.h>
 #include <string.h>
@@ -6,10 +11,13 @@
 #include "../../libs/constants.h"
 #include "../../libs/user/users_manager.h"
 
+/**
+ * Xóa người dùng khỏi shell
+ */
 int delete_user_shell(const char *rootPath)
 {
+   // tạo đường dẫn tới tập usershell.bin
    char *user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
-
    strcpy(user_shell_path, rootPath);
    strcat(user_shell_path, ETC_DIR);
    strcat(user_shell_path, USER_SHELL_FILE);
@@ -20,7 +28,7 @@ int delete_user_shell(const char *rootPath)
 
    if (file == NULL)
    {
-      return 2;
+      return NOT_FOUND_EXIT_CODE;
    }
 
    unsigned int n_stud = 0;
@@ -37,17 +45,16 @@ int delete_user_shell(const char *rootPath)
    // nếu không còn người dùng nào thì thoát shell
    if (n_stud == 0)
    {
-      return 1;
+      return ERROR_EXIT_CODE;
    }
 
    // còn thì xóa người dùng theo cơ chế stack
-
    remove(user_shell_path);
    file = fopen(user_shell_path, "w");
 
    if (file == NULL)
    {
-      return 2;
+      return NOT_FOUND_EXIT_CODE;
    }
 
 
@@ -59,14 +66,14 @@ int delete_user_shell(const char *rootPath)
       fwrite(renew_users,sizeof(UserInfo), n_stud-1, file);
 
       fclose(file);
-      return 0;
+      return SUCCESS_EXIT_CODE;
    }
 
    fclose(file);
 
    
 
-   return 1;
+   return ERROR_EXIT_CODE;
 }
 
 int exit_user(const char *rootPath)
@@ -81,5 +88,5 @@ int main(int argc, char **argv)
       return exit_user(argv[1]);
    }
 
-   return (2);
+   return ERROR_EXIT_CODE;
 }

@@ -1,3 +1,11 @@
+/**
+ * @author Nguyễn Văn Khánh Duy
+ * @date 21/09/2022
+ * Câu lệnh hiển thị các thư mục và tập tin ở đường dẫn hiện hành 
+ * @details the deprecated script.
+ */
+
+
 #include "stdio.h"
 #include <stdlib.h>
 #include <string.h>

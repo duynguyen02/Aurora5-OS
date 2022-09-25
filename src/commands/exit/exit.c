@@ -1,3 +1,10 @@
+/**
+ * @author Nguyễn Văn Khánh Duy
+ * @date 20/09/2022
+ * Câu lệnh đăng xuất người dùng khỏi shell
+ * @details the deprecated script.
+ */
+
 #include "stdio.h"
 #include <stdlib.h>
 #include <string.h>

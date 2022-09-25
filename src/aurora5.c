@@ -114,13 +114,14 @@ int main()
     // cấp phát bộ nhớ cho câu lệnh
     char *command = (char*)calloc(MAX_BUFFER_SIZE,sizeof(char));
     
-    int exit_code = 0;
+    int exit_code = SUCCESS_EXIT_CODE;
 
     welcome_message(OS_VERSION);
 
     add_user_to_shell(ROOT_DIR, *user);
 
-    while (exit_code == 0 || exit_code == 2)
+    // shell sẽ chạy liên tục đến khi nào gặp exit_code là 128
+    while (exit_code != EXIT_EXIT_CODE)
     {
         aurora_shell(user->current_user, user->host_name, user->root_dir, user->current_dir, exit_code);
 
@@ -130,7 +131,7 @@ int main()
 
         user = get_current_user(ROOT_DIR);
         if (user == NULL){
-            exit_code = 1;
+            exit_code = EXIT_EXIT_CODE;
         }
 
     }
