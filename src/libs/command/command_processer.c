@@ -47,12 +47,13 @@ char **get_args(char *command, char * rootPath)
 
 int execute_command(char *command, char *rootPath)
 {
+    // lấy các đối số dòng lệnh từ chuỗi lệnh
     char **args = get_args(command, rootPath);
 
-    // nếu không nhập lệnh gì cả
+    // nếu không nhập lệnh gì cả thì trả về SUCCESS_EXIT_CODE
     if (strlen(*args) == 1)
     {
-        return 0;
+        return SUCCESS_EXIT_CODE;
     }
 
     // tìm kiếm các câu lệnh trong bin
@@ -71,7 +72,7 @@ int execute_command(char *command, char *rootPath)
     if (is_file_exists(path) == 0)
     {
         printf("Command not found: %s\n", *args);
-        return 2;
+        return NOT_FOUND_EXIT_CODE;
     }
 
 

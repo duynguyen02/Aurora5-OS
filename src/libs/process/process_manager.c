@@ -4,6 +4,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include "../constants.h"
+
 typedef struct
 {
     char *path;
@@ -12,7 +14,7 @@ typedef struct
 
 int run_thread(const char *binPath, char **argv)
 {
-    int exit_code = 1;
+    int exit_code = ERROR_EXIT_CODE;
 
     int child_process_id = fork();
     if (child_process_id)

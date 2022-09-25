@@ -16,6 +16,18 @@
     #define EXIT_STATUS 1
 
 
+    #define SUCCESS_EXIT_CODE 0
+    #define EXIT_EXIT_CODE 128
+    #define ERROR_EXIT_CODE 1
+    #define MISUSE_EXIT_CODE 2
+    #define CAN_NOT_EXEC_EXIT_CODE 126
+    #define NOT_FOUND_EXIT_CODE 127
+
+
+
+
+
+
 
     // định nghĩa các thành phần thư mục etc //
     #define ETC_DIR "/etc"

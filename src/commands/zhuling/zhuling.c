@@ -130,7 +130,7 @@ int add_repo(char *repo_url, char *root_path)
 
     fclose(file);
 
-    return SUCESS_EXIT_STATUS;
+    return SUCCESS_EXIT_CODE;
 }
 
 int list_scripts(char *root_path)
@@ -145,7 +145,7 @@ int list_scripts(char *root_path)
     if (direntory == NULL)
     {
         printf("Something went wrong, try again.\n");
-        return ERROR_EXIT_STATUS;
+        return ERROR_EXIT_CODE;
     }
 
     while ((entry = readdir(direntory)) != NULL)
@@ -207,19 +207,19 @@ int download_file(char *url, char *filename, char *root_path)
             if (is_file_exists(final_path) == 0)
             {
                 printf("Error when download a file from repo.\n");
-                return ERROR_EXIT_STATUS;
+                return ERROR_EXIT_CODE;
             }
             chmod(final_path, 0777);
-            return SUCESS_EXIT_STATUS;
+            return SUCCESS_EXIT_CODE;
         }
 
         curl_easy_cleanup(curl);
 
         curl_global_cleanup();
 
-        return SUCESS_EXIT_STATUS;
+        return SUCCESS_EXIT_CODE;
     }
-    return ERROR_EXIT_STATUS;
+    return ERROR_EXIT_CODE;
 }
 
 int install_script(char *script_name, char *root_path)
@@ -234,7 +234,7 @@ int install_script(char *script_name, char *root_path)
     if (is_file_exists(config_path) == 0)
     {
         printf("Something went wrong, try again.\n");
-        return ERROR_EXIT_STATUS;
+        return NOT_FOUND_EXIT_CODE;
     }
 
     FILE *fp;
@@ -246,7 +246,7 @@ int install_script(char *script_name, char *root_path)
     if (fp == NULL)
     {
         printf("Something went wrong, try again.\n");
-        return ERROR_EXIT_STATUS;
+        return NOT_FOUND_EXIT_CODE;
     }
 
     printf("Reading repo lists...\n");
@@ -273,7 +273,7 @@ int install_script(char *script_name, char *root_path)
             if (strcmp(header, "[zhuling]") != 0)
             {
                 printf("Invalid repository list.\n");
-                return ERROR_EXIT_STATUS;
+                return MISUSE_EXIT_CODE;
             }
             else
             {
@@ -319,13 +319,13 @@ int install_script(char *script_name, char *root_path)
                     curLine = nextLine ? (nextLine + 1) : NULL;
                 }
                 printf("Unable to locate script %s\n", script_name);
-                return ERROR_EXIT_STATUS;
+                return NOT_FOUND_EXIT_CODE;
             }
         }
         else
         {
             printf("Error when mirror to '%s'\n", line);
-            return ERROR_EXIT_STATUS;
+            return ERROR_EXIT_CODE;
         }
     }
 
@@ -333,7 +333,7 @@ int install_script(char *script_name, char *root_path)
     if (line)
         free(line);
     printf("Something went wrong, try again.\n");
-    return ERROR_EXIT_STATUS;
+    return ERROR_EXIT_CODE;
 }
 
 int remove_script(char *script_name, char *root_path)
@@ -346,12 +346,12 @@ int remove_script(char *script_name, char *root_path)
 
     if (is_file_exists(final_path) == 0){
         printf("Unable to locate script %s\n", script_name);
-        return ERROR_EXIT_STATUS;
+        return NOT_FOUND_EXIT_CODE;
     }
 
     remove(final_path);
     printf("Sucessful!\n");
-    return SUCESS_EXIT_STATUS;
+    return SUCCESS_EXIT_CODE;
 
 }
 
@@ -391,13 +391,13 @@ int main(int argc, char *argv[])
         printf(" install  : Install/upgrade a script\n");
         printf(" remove   : Remove a script\n");
         printf(" list     : List all scripts\n\n");
-        return ERROR_EXIT_STATUS;
+        return ERROR_EXIT_CODE;
     }
 
     if (argc > 4)
     {
         printf("%s: Error: to many arguments, try again!\n", NAME);
-        return ERROR_EXIT_STATUS;
+        return ERROR_EXIT_CODE;
     }
     // for (int i =0;i<argc;i++){
     //     printf("%s\n",argv[i]);
@@ -415,5 +415,5 @@ int main(int argc, char *argv[])
         return remove_script(argv[2], argv[argc - 1]);
     }
     printf("Unknown: %s\n",argv[2]);
-    return ERROR_EXIT_STATUS;
+    return ERROR_EXIT_CODE;
 }
