@@ -252,7 +252,7 @@ int install_script(char *script_name, char *root_path)
     printf("Reading repo lists...\n");
     while ((read = getline(&line, &len, fp)) != -1)
     {
-        printf("%s\n", line);
+        printf("[Repo] %s", line);
         if (line[strlen(line) - 1] == 10)
         {
             line[strlen(line) - 1] = '\0';
@@ -272,8 +272,7 @@ int install_script(char *script_name, char *root_path)
             }
             if (strcmp(header, "[zhuling]") != 0)
             {
-                printf("Invalid repository list.\n");
-                return MISUSE_EXIT_CODE;
+                printf("Invalid repository list.\n\n");
             }
             else
             {
