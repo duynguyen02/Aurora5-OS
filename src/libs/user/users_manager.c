@@ -1,3 +1,9 @@
+/**
+ * Thư viện quản lý người dùng của Aurora5-OS
+ * @author Nguyễn Văn Khánh Duy
+ * @date 15/09/2022
+ */
+
 #include "string.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,8 +17,29 @@
 
 #include "users_manager.h"
 
+
+
+char *create_passwd_file_path(const char *rootPath);
+char *create_hostname_file_path(const char *rootPath);
+int is_user_exist(char *userName, const char *rootPath);
+int is_correct_password(char *userName, char *password, const char *rootPath);
+int is_admin(char *userName, const char *rootPath);
+int add_user(char *userName, char *password, int isAdmin, const char *rootPath);
+int remove_user(char *userName, const char *rootPath);
+char *get_host_name(const char *rootPath);
+char *get_user_dir(const char *rootPath, const char *username);
+int add_user_to_shell(const char *rootPath, UserInfo user);
+int append_user_to_shell(const char *rootPath, UserInfo user);
+UserInfo *get_current_user(const char *rootPath);
+int replace_the_last_shell_user(const char *rootPath, UserInfo user);
+int is_user_active(char *username, char *rootPath);
+
+
+
 /**
  * tạo đường dẫn cho file passwd
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @return đường dẫn tuyệt đối tới tệp passwd
  */
 char *create_passwd_file_path(const char *rootPath)
 {
@@ -26,11 +53,13 @@ char *create_passwd_file_path(const char *rootPath)
 }
 
 /**
- * Tạo đường dẫn cho file hostname
+ * tạo đường dẫn cho file hostname
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @return đường dẫn tuyệt đối tới tệp hostname
  */
 char *create_hostname_file_path(const char *rootPath)
 {
-    // tạo đường dẫn tuyệt đối cho file passwd
+    // tạo đường dẫn tuyệt đối cho file hostname
     char *passwd_file_path;
     passwd_file_path = malloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(HOST_NAME_FILE) + 1);
     strcpy(passwd_file_path, rootPath);
@@ -41,6 +70,9 @@ char *create_hostname_file_path(const char *rootPath)
 
 /**
  * Kiểm tra xem người dùng có tồn tại hay không
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param userName: tên người dùng
+ * @return 1 nếu người dùng tồn tại ngược lại là 0
  */
 int is_user_exist(char *userName, const char *rootPath)
 {
@@ -69,7 +101,11 @@ int is_user_exist(char *userName, const char *rootPath)
 }
 
 /**
- * kiểm tra xem mật khẩu người dùng có đúng không
+ * Kiểm tra xem người dùng có đúng hay không
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param userName: tên người dùng
+ * @param password: mật khẩu người dùng
+ * @return 1 nếu mật khẩu chính xác ngược lại là 0
  */
 int is_correct_password(char *userName, char *password, const char *rootPath)
 {
@@ -102,7 +138,10 @@ int is_correct_password(char *userName, char *password, const char *rootPath)
 }
 
 /**
- * kiểm tra xem người dùng có phải admin
+ * Kiểm tra xem người dùng có phải quản trị viên hay không
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param userName: tên người dùng
+ * @return 1 nếu người dùng là quản trị viên ngược lại là 0
  */
 int is_admin(char *userName, const char *rootPath)
 {
@@ -140,7 +179,12 @@ int is_admin(char *userName, const char *rootPath)
 }
 
 /**
- * Thêm người dùng vào hệ thống
+ * Thêm người dùng vào Aurora5-OS
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param userName: tên người dùng
+ * @param password: mật khẩu người dùng
+ * @param isAdmin : người dùng có phải quản trị viên
+ * @return 1 nếu thêm thành công ngược lại là 0
  */
 int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
 {
@@ -192,7 +236,10 @@ int add_user(char *userName, char *password, int isAdmin, const char *rootPath)
 }
 
 /**
- * xóa người dùng
+ * Xóa người dùng khỏi Aurora5-OS
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param userName: tên người dùng
+ * @return 1 nếu xóa thành công ngược lại là 0
  */
 int remove_user(char *userName, const char *rootPath)
 {
@@ -231,7 +278,9 @@ int remove_user(char *userName, const char *rootPath)
 }
 
 /**
- * Lấy tên của hostname
+ * lấy tên máy chủ trong file hostname
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @return tên của máy chủ
  */
 char *get_host_name(const char *rootPath)
 {
@@ -256,7 +305,10 @@ char *get_host_name(const char *rootPath)
 }
 
 /**
- * Lấy đường dẫn của thư mục người dùng
+ * Lấy đường dẫn tuyệt đối của thư mục của người dùng
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param username: tên người dùng
+ * @return đường dẫn tuyệt đối của thư mục của người dùng
  */
 char *get_user_dir(const char *rootPath, const char *username)
 {
@@ -281,7 +333,10 @@ char *get_user_dir(const char *rootPath, const char *username)
 }
 
 /**
- * Thêm người dùng đăng nhập vào shell
+ * Nạp người dùng đăng nhập đầu tiên vào shell
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param user: cấu trúc chứa thông tin người dùng 
+ * @return 1 nếu thêm thành công ngược lại là 0
  */
 int add_user_to_shell(const char *rootPath, UserInfo user)
 {
@@ -311,7 +366,10 @@ int add_user_to_shell(const char *rootPath, UserInfo user)
 }
 
 /**
- * Thêm người dùng đăng nhập vào shell
+ * Nạp các người dùng đăng nhập tiếp theo vào shell
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param user: cấu trúc chứa thông tin người dùng 
+ * @return 1 nếu thêm thành công ngược lại là 0
  */
 int append_user_to_shell(const char *rootPath, UserInfo user)
 {
@@ -341,7 +399,9 @@ int append_user_to_shell(const char *rootPath, UserInfo user)
 }
 
 /**
- * Lấy thông tin người dùng hiện tại đang chạy shell
+ * Lây thông tin người dùng đang đăng nhập vào Shell
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @return địa chỉ trỏ đến cấu trúc thông tin của người dùng
  */
 UserInfo *get_current_user(const char *rootPath)
 {
@@ -380,6 +440,12 @@ UserInfo *get_current_user(const char *rootPath)
     return l_user;
 }
 
+/**
+ * Thay thế thông tin người dùng đang đăng nhập vào Shell
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @param user: cấu trúc người dùng chứa thông tin bị thay đổi
+ * @return trả về 1 nếu thay thế thành công ngược lại là 0
+ */
 int replace_the_last_shell_user(const char *rootPath, UserInfo user)
 {
     char *user_shell_path = calloc(strlen(rootPath) + strlen(ETC_DIR) + strlen(USER_SHELL_FILE) + 1, sizeof(char));
@@ -436,6 +502,9 @@ int replace_the_last_shell_user(const char *rootPath, UserInfo user)
 
 /**
  * Kiểm tra xem user có đang hoạt động trong shell hay không
+ * @param username: tên người dùng
+ * @param rootPath: đường dẫn tuyệt đối từ máy chính tới Aurora5-OS
+ * @return trả về 1 nếu đang hoạt động ngược lại là 0
  */
 int is_user_active(char *username, char *rootPath)
 {

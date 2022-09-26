@@ -1,3 +1,9 @@
+/**
+ * Thư viện cài đặt các cấu hình cần thiết cho Aurora5-OS
+ * @author Nguyễn Văn Khánh Duy
+ * @date 15/09/2022
+ */
+
 #include <stdlib.h>
 #include <curses.h>
 #include <unistd.h>
