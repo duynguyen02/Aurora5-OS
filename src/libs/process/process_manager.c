@@ -6,11 +6,6 @@
 
 #include "../constants.h"
 
-typedef struct
-{
-    char *path;
-    char **argv;
-} compute_prime_struct;
 
 int run_thread(const char *binPath, char **argv)
 {
