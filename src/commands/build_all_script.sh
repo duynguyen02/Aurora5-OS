@@ -76,6 +76,10 @@ gcc -o out/build/rmdir rmdir/rmdir.c libs/users_manager.a libs/security.a -lcryp
 # lệnh zhuling
 gcc -o out/build/zhuling zhuling/zhuling.c -lcurl libs/common.a
 
+# lệnh shutdown
+gcc -o out/build/shutdown shutdown/shutdown.c
+
+
 ### Xoá toàn bộ file object ###
 rm *.o;
 

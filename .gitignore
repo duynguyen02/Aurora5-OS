@@ -15,3 +15,5 @@ aurora5
 src/out
 
 src/build
+
+test.c

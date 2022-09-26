@@ -57,21 +57,28 @@ int delete_user_shell(const char *rootPath)
       return NOT_FOUND_EXIT_CODE;
    }
 
-
-   if (n_stud >= 2){
-      UserInfo renew_users[n_stud-1];
-      for (int i = 0;i < n_stud -1 ; i++){
+   if (n_stud >= 2)
+   {
+      UserInfo renew_users[n_stud - 1];
+      for (int i = 0; i < n_stud - 1; i++)
+      {
          renew_users[i] = users[i];
       }
-      fwrite(renew_users,sizeof(UserInfo), n_stud-1, file);
+      fwrite(renew_users, sizeof(UserInfo), n_stud - 1, file);
 
+      fclose(file);
+      return SUCCESS_EXIT_CODE;
+   }
+   else
+   {
+      UserInfo renew_users[1];
+      renew_users[0] = users[0];
+      fwrite(renew_users, sizeof(UserInfo), 1, file);
       fclose(file);
       return SUCCESS_EXIT_CODE;
    }
 
    fclose(file);
-
-   
 
    return ERROR_EXIT_CODE;
 }
