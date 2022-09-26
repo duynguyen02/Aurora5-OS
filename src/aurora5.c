@@ -40,7 +40,7 @@ const char *OS_VERSION = "1.1.0";
 
 void sigintHandler(int sig_num);
 UserInfo *login(char *root_dir);
-int init_shell();
+void init_shell();
 
 int main()
 {
@@ -68,123 +68,149 @@ int main()
             ROOT_DIR);
         clear_c();
     }
-
     free(etc_absolute_path);
 
-    // Đăng nhập vào hệ thống
-    UserInfo *user = login(ROOT_DIR);
 
-    // khởi động Shell
-    return init_shell(user, ROOT_DIR);
+    // đăng nhập và khởi tạo shell
+    // Shell chỉ tắt khi gọi lệnh shutdown
+    // hoặc các lệnh trả về EXIT_EXIT_CODE 128
+    while (1)
+    {
+        // Đăng nhập vào hệ thống để nạp người dùng đầu tiên vào shell
+        UserInfo *user = login(ROOT_DIR);
+        // Khởi động Shell
+        init_shell(user, ROOT_DIR);
+    }
+
+    return 0;
 }
 
 /**
  * Hàm đăng nhập vào Shell
  * @param root_dir: đường dẫn tuyệt đối từ máy chính đến Shell
- *
+ * @return địa chỉ ô nhớ trỏ tới thông tin của người dùng đầu tiên nạp vào shell
  */
 UserInfo *login(char *root_dir)
 {
-    char *user_name;
-    int _is_user_exist = 0;
-
-    while (_is_user_exist == 0)
+    // khởi chạy vòng lặp vô hạn cho đến khi có thể trả về 1 người dùng.
+    while (1)
     {
+        // cấp phát bộ nhớ để người dùng nhập tên đăng nhập
+        char *user_name;
         user_name = (char *)calloc(MAX_BUFFER_SIZE, sizeof(char));
         printf("Login: ");
         scanf("%s", user_name);
-        _is_user_exist = is_user_exist(user_name, root_dir);
 
-        if (_is_user_exist == 0)
+        // nếu người dùng không tồn lại sẽ lặp lại vòng lặp
+        if (is_user_exist(user_name, root_dir) == 0)
         {
             printf("User does not exist! Please try again!\n");
+            continue;
         }
-    }
 
-    char *password;
-    int _is_correct_pass = 0;
-    while (_is_correct_pass == 0)
-    {
+
+        char *password;
         password = (char *)calloc(MAX_BUFFER_SIZE, sizeof(char));
         printf("Password: ");
         password = strdup(getpass(""));
-        _is_correct_pass = is_correct_password(user_name, password, root_dir);
-        if (_is_correct_pass == 0)
+
+        // nếu nhập sai mật khẩu sẽ lặp lại vòng lặp
+        if (is_correct_password(user_name, password, root_dir) == 0)
         {
             printf("Incorrect password! Try again!\n");
+            continue;
         }
+
+        // xóa màn hình
+        clear_c();
+
+        // khởi tạo người dùng hiện tại
+        char *CURRENT_USER = (char *)calloc(strlen(user_name) + 1, sizeof(char));
+
+        strcpy(CURRENT_USER, user_name);
+
+        // hostname
+        char *HOST_NAME = get_host_name(root_dir);
+
+        free(user_name);
+        free(password);
+
+        // giải phóng stdin
+        fflush(stdin);
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF)
+            ;
+
+        // khởi tạo thông tin người dùng để nạp vào shell
+        UserInfo *user = malloc(sizeof(UserInfo));
+
+        strcpy(user->current_user, CURRENT_USER);
+        strcpy(user->host_name, get_host_name(root_dir));
+        strcpy(user->root_dir, root_dir);
+        strcpy(user->current_dir, get_user_dir(root_dir, CURRENT_USER));
+        user->is_admin = (is_admin(CURRENT_USER, root_dir) == 1) ? 1 : 0;
+
+        return user;
     }
 
-    clear_c();
-
-    // khởi tạo người dùng hiện tại
-    char *CURRENT_USER = (char *)calloc(strlen(user_name) + 1, sizeof(char));
-
-    strcpy(CURRENT_USER, user_name);
-
-    // hostname
-    char *HOST_NAME = get_host_name(root_dir);
-
-    free(user_name);
-    free(password);
-
-    // giải phóng stdin
-    fflush(stdin);
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-
-    // khởi tạo thông tin shell
-    UserInfo *user = malloc(sizeof(UserInfo));
-
-    strcpy(user->current_user, CURRENT_USER);
-    strcpy(user->host_name, get_host_name(root_dir));
-    strcpy(user->root_dir, root_dir);
-    strcpy(user->current_dir, get_user_dir(root_dir, CURRENT_USER));
-    user->is_admin = (is_admin(CURRENT_USER, root_dir) == 1) ? 1 : 0;
-
-    return user;
+    return NULL;
 }
 
-int init_shell(UserInfo *user, char *root_dir)
+void init_shell(UserInfo *user, char *root_dir)
 {
-    // Nếu khởi tạo được người dùng thì bắt đầu bật Shell
+    // Nếu khởi tạo được người dùng thì bắt đầu khởi động Shell
     if (user != NULL)
     {
 
         // cấp phát bộ nhớ cho câu lệnh
         char *command = (char *)calloc(MAX_BUFFER_SIZE, sizeof(char));
 
+        // tin nhắn chào mừng
         welcome_message(OS_VERSION);
 
         // khởi tạo exit code mặc định là 0
         int exit_code = SUCCESS_EXIT_CODE;
 
+        // nạp người dùng vào shell
         add_user_to_shell(root_dir, *user);
 
-        // shell sẽ chạy liên tục đến khi nào gặp exit_code là 128
-        while (exit_code != EXIT_EXIT_CODE)
+        // shell sẽ chạy đến khi nào không còn người dùng đăng nhập vào shell
+        // shell sẽ tắt nếu gặp exit code 128
+        while (1)
         {
+            // hiển thị thanh trạng thái của shell
             aurora_shell(user->current_user, user->host_name, user->root_dir, user->current_dir, exit_code);
 
+            // nhập lệnh 
             fgets(command, MAX_BUFFER_SIZE, stdin);
 
+            // thực thi lệnh và trả về cho exit_code
             exit_code = execute_command(command, root_dir);
 
+            // nếu exit_code là 128 thì tắt hoàn toàn shell
+            if (exit_code == EXIT_EXIT_CODE)
+            {
+                exit(SUCCESS_EXIT_CODE);
+            }
+
+            // tiến hành lấy thông tin người dùng hiện hành
+            // nếu shell không còn người dùng đăng nhập thì ngắt shell
+            // để trở lại màn hình đăng nhập
             user = get_current_user(root_dir);
             if (user == NULL)
             {
-                exit_code = EXIT_EXIT_CODE;
+                clear_c();
+                break;
             }
         }
-
         free(command);
-        return SUCCESS_EXIT_CODE;
     }
-
-    return ERROR_EXIT_CODE;
 }
 
+/**
+ * Hàm nhận tính hiệu Ctrl + C ngăn người dùng sử dụng 
+ * Ctrl + C để ngắt Shell
+ */
 void sigintHandler(int sig_num)
 {
     /* Reset handler to catch SIGINT next time.

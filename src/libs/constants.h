@@ -1,3 +1,7 @@
+/**
+ * Chứa các ràng buộc cho Aurora5-OS
+ */
+
 #ifndef CONSTANTS_H_
     #define CONSTANTS_H_
 
@@ -45,9 +49,5 @@
 
     // định nghĩa các thành phần thư mục root //
     #define ROOT_HOME_DIR "/root"
-
-
-
-
 
 #endif

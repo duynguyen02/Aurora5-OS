@@ -1,3 +1,9 @@
+/**
+ * Thư viện giao diện Shell của Aurora5-OS
+ * @author Nguyễn Văn Khánh Duy
+ * @date 15/09/2022
+ */
+
 #include "shell.h"
 #include "stdlib.h"
 #include "string.h"
@@ -81,10 +87,6 @@ void aurora_shell(const char* userName, const char* hostName, const char * rootD
 
     }
 
-
-
-
-    
     printf("%s%s[%s]%s \u2665 %s[%s]%s[%s]\n%s",status,MAG ,userName, RED,BLU,hostName, GRN, final_current_dir ,RESET);
     printf("\u22D9  ");
     text_color(RESET);

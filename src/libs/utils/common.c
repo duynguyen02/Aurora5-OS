@@ -1,3 +1,9 @@
+/**
+ * Thư viện của Aurora5-OS chứa các hàm phổ biến
+ * @author Nguyễn Văn Khánh Duy
+ * @date 15/09/2022
+ */
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>

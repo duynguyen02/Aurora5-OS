@@ -1,3 +1,9 @@
+/**
+ * Thư viên tạo luồng của Aurora5-OS
+ * @author Nguyễn Văn Khánh Duy
+ * @date 20/09/2022
+ */
+
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +12,12 @@
 
 #include "../constants.h"
 
-
+/**
+ * Tạo luồng và thực thi câu lệnh
+ * @param binPath: đường dẫn tới file thực thi
+ * @param argv: các đối số dòng lệnh
+ * @return exit code
+ */
 int run_thread(const char *binPath, char **argv)
 {
     int exit_code = ERROR_EXIT_CODE;

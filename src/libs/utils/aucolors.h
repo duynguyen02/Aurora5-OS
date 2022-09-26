@@ -1,3 +1,7 @@
+/**
+ * Các ràng buộc màu sắc của thư viện aucolors
+ */
+
 #include <stdio.h>
 
 #ifndef AUCOLORS_H_

@@ -69,14 +69,6 @@ int delete_user_shell(const char *rootPath)
       fclose(file);
       return SUCCESS_EXIT_CODE;
    }
-   else
-   {
-      UserInfo renew_users[1];
-      renew_users[0] = users[0];
-      fwrite(renew_users, sizeof(UserInfo), 1, file);
-      fclose(file);
-      return SUCCESS_EXIT_CODE;
-   }
 
    fclose(file);
 
