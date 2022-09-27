@@ -138,7 +138,7 @@ UserInfo *login(char *root_dir)
             ;
 
         // khởi tạo thông tin người dùng để nạp vào shell
-        UserInfo *user = malloc(sizeof(UserInfo));
+        UserInfo *user = calloc(MAX_BUFFER_SIZE, sizeof(UserInfo));
 
         strcpy(user->current_user, CURRENT_USER);
         strcpy(user->host_name, get_host_name(root_dir));
