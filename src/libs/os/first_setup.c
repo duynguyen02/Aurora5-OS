@@ -19,7 +19,12 @@
 #include "shell.h"
 
 void display_progess_bar(const char* osVersion);
+void first_time_setup(const char * osName, const char * osVersion, const char * rootPath);
 
+
+/**
+ * Hàm cài đặt các thiết lập lần đầu cho Aurora5-OS
+ */
 void first_time_setup(const char * osName, const char * osVersion, const char * rootPath){
 
     char * etc_absolute_path;

@@ -63,30 +63,39 @@ void progress_bar(float iteration, float total){
     
 }
 
+/**
+ * Hàm xóa màn hình
+ */
 void clear_c(){
     printf("\e[1;1H\e[2J");
 }
 
 const char * ROOT_SYMBOL = "/";
 
+/**
+ * Hàm in giao diện Shell
+ */
 void aurora_shell(const char* userName, const char* hostName, const char * rootDir,char* currentDir, int exitCode){
     char * final_current_dir;
+
+    // trạng thái của exit_code
     char * status = (exitCode == 0) ? "\x1B[32m[\u2713]" : "\x1B[31m[\u2613]";
 
+    // nếu là thư mục gốc thì loại bỏ toàn bộ đường dẫn từ máy chính
     if (strcmp(rootDir, currentDir) == 0){
         final_current_dir = (char*)calloc(strlen(ROOT_SYMBOL) + 1,sizeof(char));
         strcpy(final_current_dir, ROOT_SYMBOL);
     }
     else{
+        // cắt chuỗi con từ cuối tường dẫn tuyệt đối từ máy chính đến Aurora5-OS đến hết
         char *start = &currentDir[strlen(rootDir)];
         char *end = &currentDir[strlen(currentDir)];
-
         final_current_dir = (char*)calloc(MAX_BUFFER_SIZE,sizeof(char));
-
         memcpy(final_current_dir, start, end-start);
 
     }
 
+    // in giao diện ra màn hình
     printf("%s%s[%s]%s \u2665 %s[%s]%s[%s]\n%s",status,MAG ,userName, RED,BLU,hostName, GRN, final_current_dir ,RESET);
     printf("\u22D9  ");
     text_color(RESET);

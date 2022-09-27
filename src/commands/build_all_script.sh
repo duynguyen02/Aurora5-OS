@@ -79,6 +79,11 @@ gcc -o out/build/zhuling zhuling/zhuling.c -lcurl libs/common.a
 # lệnh shutdown
 gcc -o out/build/shutdown shutdown/shutdown.c
 
+# lệnh writef
+gcc -o out/build/writef writef/writef.c libs/common.a
+
+# lệnh cat
+gcc -o out/build/cat cat/cat.c libs/common.a
 
 ### Xoá toàn bộ file object ###
 rm *.o;
