@@ -50,8 +50,6 @@ int main()
     // lấy thư mục hiện hành (giả định là thư mục gốc)
     char *ROOT_DIR = get_current_dir();
 
-    // thiết lập thư mục hiện hành cho hệ điều hành là thư mục gốc
-    char *CURRENT_DIR = ROOT_DIR;
 
     // nếu thư mục etc chưa tồn tại, giả định hệ điều hành chưa được cài đặt
     // bắt đầu thiết lập cài đặt hệ điều hành
@@ -80,6 +78,7 @@ int main()
         UserInfo *user = login(ROOT_DIR);
         // Khởi động Shell
         init_shell(user, ROOT_DIR);
+        free(user);
     }
 
     return 0;
@@ -129,9 +128,6 @@ UserInfo *login(char *root_dir)
 
         strcpy(CURRENT_USER, user_name);
 
-        // hostname
-        char *HOST_NAME = get_host_name(root_dir);
-
         free(user_name);
         free(password);
 
@@ -149,6 +145,8 @@ UserInfo *login(char *root_dir)
         strcpy(user->root_dir, root_dir);
         strcpy(user->current_dir, get_user_dir(root_dir, CURRENT_USER));
         user->is_admin = (is_admin(CURRENT_USER, root_dir) == 1) ? 1 : 0;
+
+        free(CURRENT_USER);
 
         return user;
     }
@@ -190,6 +188,7 @@ void init_shell(UserInfo *user, char *root_dir)
             // nếu exit_code là 128 thì tắt hoàn toàn shell
             if (exit_code == EXIT_EXIT_CODE)
             {
+                free(command);
                 exit(SUCCESS_EXIT_CODE);
             }
 
@@ -200,10 +199,10 @@ void init_shell(UserInfo *user, char *root_dir)
             if (user == NULL)
             {
                 clear_c();
+                free(command);
                 break;
             }
         }
-        free(command);
     }
 }
 
