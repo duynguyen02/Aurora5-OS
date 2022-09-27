@@ -19,5 +19,5 @@ int main(int argc, char **argv){
     }
     printf("\n");
 
-    return ERROR_EXIT_CODE;
+    return SUCCESS_EXIT_CODE;
 }
