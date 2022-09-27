@@ -72,10 +72,11 @@ int main()
     // đăng nhập và khởi tạo shell
     // Shell chỉ tắt khi gọi lệnh shutdown
     // hoặc các lệnh trả về EXIT_EXIT_CODE 128
+    UserInfo *user;
     while (1)
     {
         // Đăng nhập vào hệ thống để nạp người dùng đầu tiên vào shell
-        UserInfo *user = login(ROOT_DIR);
+        user = login(ROOT_DIR);
         // Khởi động Shell
         init_shell(user, ROOT_DIR);
         free(user);
