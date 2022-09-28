@@ -31,8 +31,8 @@ int main(int argc, char **argv)
 
         char * file_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
         strcpy(file_path, argv[argc-1]);
-        strcpy(file_path,"/");
-        strcpy(file_path,argv[1]);
+        strcat(file_path,"/");
+        strcat(file_path,argv[1]);
 
         return write_file(file_path, mode, argv[3], argv[argc - 1]);
 
